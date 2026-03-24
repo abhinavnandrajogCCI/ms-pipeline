@@ -111,6 +111,10 @@ jobs:
                 "snapshots": { "enabled": "true" }
               }
             ]
+      - name: Set Lowercase Mule Environment
+        run: |
+          MULE_ENV=$(echo '${{ inputs.environment }}' | tr '[:upper:]' '[:lower:]')
+          echo "MULE_ENV=$MULE_ENV" >> $GITHUB_ENV
           
       - name: Run MUnit Tests
         if: >
@@ -120,11 +124,10 @@ jobs:
           echo "Running MUnit Tests..."
           mvn clean test -D"mule.env"="${{ env.ENVIRONMENT }}" -D"app.vCores"="${{ inputs.vCore }}" -D"app.replicas"="${{ inputs.replicas }}"
            
-      
       - name: Deploy to Exchange
         run: |
           mvn clean deploy -DskipTests 
      
       - name: Deploy to ${{ inputs.environment }} 
         run: |
-          mvn clean deploy -DskipTests -DmuleDeploy -D"appName"=$(echo ("${{inputs.repository}}-${{inputs.environment}}-${{env.TARGET}}")| tr '[:upper:]' '[:lower:]') -D"environment"="${{ env.ENVIRONMENT }}" -D"app.vCores"="${{ inputs.vCore }}" -D"app.replicas"="${{ inputs.replicas }}" -D"target"="${{ env.TARGET }}" -D"connectedAppClientId"="${{ env.CONNECTED_APP_CLIENT_ID }}" -D"connectedAppClientSecret"="${{ env.CONNECTED_APP_CLIENT_SECRET }}" -D"connectedAppGrantType"="${{ env.GRANT_TYPE }}" -D"anypoint.platform.client_id"="${{ env.ANYPOINT_CLIENT_ID }}" -D"anypoint.platform.client_secret"="${{ env.ANYPOINT_CLIENT_SECRET }}"
+          mvn clean deploy -DskipTests -DmuleDeploy -D"appName"="${{ inputs.repository}}-${{env.MULE_ENV}}-${{env.TARGET}}" -D"environment"="${{ env.ENVIRONMENT }}" -D"app.vCores"="${{ inputs.vCore }}" -D"app.replicas"="${{ inputs.replicas }}" -D"target"="${{ env.TARGET }}" -D"connectedAppClientId"="${{ env.CONNECTED_APP_CLIENT_ID }}" -D"connectedAppClientSecret"="${{ env.CONNECTED_APP_CLIENT_SECRET }}" -D"connectedAppGrantType"="${{ env.GRANT_TYPE }}" -D"anypoint.platform.client_id"="${{ env.ANYPOINT_CLIENT_ID }}" -D"anypoint.platform.client_secret"="${{ env.ANYPOINT_CLIENT_SECRET }}"
