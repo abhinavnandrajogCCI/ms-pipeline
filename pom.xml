@@ -6,7 +6,7 @@
 
 	<groupId>33f3d13e-6095-4ef1-b55c-af08069e2ee9</groupId>
 	<artifactId>poc-mulesoft-pipeline</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
 	<name>poc-mulesoft-pipeline</name>
