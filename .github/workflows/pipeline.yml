@@ -97,8 +97,7 @@ jobs:
           repository: 'abhinavnandrajogCCI/${{ github.event.inputs.repository }}'
           ref: '${{ github.event.inputs.branch }}'
           token: "${{ env.PAT_TOKEN }}"
-          fetch-depth: 0
-
+    
       - name: Configure Maven settings
         uses: s4u/maven-settings-action@v3.1.0
         with:
