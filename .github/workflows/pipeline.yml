@@ -22,8 +22,8 @@ on:
         description: 'Branch to build'
         required: true
         default: 'dev'
-        type: string
-        otions: 
+        type: choice
+        options: 
           - 'dev'
           - 'main'
       environment:
@@ -94,7 +94,7 @@ jobs:
       - name: Checkout Selected ${{ inputs.repository }}
         uses: actions/checkout@v4
         with:
-          repository: 'UrbanLandInstitute/${{ github.event.inputs.repository }}'
+          repository: 'abhinavnandrajogCCI/${{ github.event.inputs.repository }}'
           ref: '${{ github.event.inputs.branch }}'
           token: "${{ env.PAT_TOKEN }}"
           fetch-depth: 0
