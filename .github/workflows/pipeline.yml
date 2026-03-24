@@ -31,8 +31,8 @@ on:
         required: true
         type: choice
         options:
-          - DESIGN
-          - SANDBOX
+          - Design
+          - Sandbox
       vCore:
         description: "vCore on Deployment Target"
         required: true
