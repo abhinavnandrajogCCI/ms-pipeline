@@ -123,7 +123,7 @@ jobs:
       
       - name: Deploy to Exchange
         run: |
-          mvn clean deploy -DskipTests -D"environment"="${{ env.ENVIRONMENT }}" -D"app.vCores"="${{ inputs.vCore }}" -D"app.replicas"="${{ inputs.replicas }}"  -D"target"="${{ env.TARGET }}" -D"connectedAppClientId"="${{ env.CONNECTED_APP_CLIENT_ID }}" -D"connectedAppClientSecret"="${{ env.CONNECTED_APP_CLIENT_SECRET }}" -D"connectedAppGrantType"="${{ env.GRANT_TYPE }}"
+          mvn clean deploy -DskipTests 
      
       - name: Deploy to ${{ inputs.environment }} 
         run: |
