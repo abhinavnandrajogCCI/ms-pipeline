@@ -10,8 +10,8 @@
 			</scheduling-strategy>
 		</scheduler>
 		<set-variable value="#[uuid()]" doc:name="correlationId" doc:id="59f5a749-c461-4d92-92ca-ea8111c8e22c" variableName="correlationId"/>
-		<logger level="INFO" doc:name="Logger" doc:id="b13a4d88-5af6-4fbf-be5f-488039d15a3b" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;    appName: app.name,&#10;    flowName : flow.name,&#10;    position: &quot;Flow Start&quot;,&#10;    message: {},&#10;    correlationId: vars.'correlationId',&#10;    timeStamp: now() as DateTime as String {format: &quot;yyyy-MM-dd'T'HH:mm:ss.SSS'Z'&quot;, timezone: &quot;UTC&quot;}&#10;}]"/>
+		<logger level="INFO" doc:name="Start" doc:id="b13a4d88-5af6-4fbf-be5f-488039d15a3b" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;    appName: app.name,&#10;    flowName : flow.name,&#10;    position: &quot;Flow Start&quot;,&#10;    message: {},&#10;    correlationId: vars.'correlationId',&#10;    timeStamp: now() as DateTime as String {format: &quot;yyyy-MM-dd'T'HH:mm:ss.SSS'Z'&quot;, timezone: &quot;UTC&quot;}&#10;}]"/>
 		<set-payload value='#["Testing CI/CD pipeline"]' doc:name="Payload" doc:id="b0e9dd63-fdfe-4231-bbb3-0ceaf4238da5" />
-		<logger level="INFO" doc:name="Logger" doc:id="70d56dc3-6c76-4f92-9e7e-ce740f77f0d0" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;    appName: app.name,&#10;    flowName : flow.name,&#10;    position: &quot;Flow End&quot;,&#10;    message: {&#10;    	payload: payload&#10;    },&#10;    correlationId: vars.'correlationId',&#10;    timeStamp: now() as DateTime as String {format: &quot;yyyy-MM-dd'T'HH:mm:ss.SSS'Z'&quot;, timezone: &quot;UTC&quot;}&#10;}]"/>
+		<logger level="INFO" doc:name="End" doc:id="70d56dc3-6c76-4f92-9e7e-ce740f77f0d0" message="#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;    appName: app.name,&#10;    flowName : flow.name,&#10;    position: &quot;Flow End&quot;,&#10;    message: {&#10;    	payload: payload&#10;    },&#10;    correlationId: vars.'correlationId',&#10;    timeStamp: now() as DateTime as String {format: &quot;yyyy-MM-dd'T'HH:mm:ss.SSS'Z'&quot;, timezone: &quot;UTC&quot;}&#10;}]"/>
 	</flow>
 </mule>
