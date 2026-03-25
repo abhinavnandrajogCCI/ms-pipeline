@@ -1,4 +1,5 @@
 name: Build-Publish-Deploy
+# This pipeline is for Developer Trial - Anypont Platform Account
 
 env:
   ANYPOINT_CLIENT_ID: ${{ secrets.ANYPOINT_CLIENT_ID }}
@@ -18,6 +19,7 @@ on:
         description: 'Enter the repository name'
         required: true
         type: string
+        
       branch:
         description: 'Branch to build'
         required: true
@@ -26,6 +28,7 @@ on:
         options: 
           - 'dev'
           - 'main'
+          
       environment:
         description: "Deployment Environment"
         required: true
@@ -33,6 +36,7 @@ on:
         options:
           - Design
           - Sandbox
+          
       vCore:
         description: "vCore on Deployment Target"
         required: true
@@ -44,6 +48,7 @@ on:
           - "1"
           - "2"
           - "4"
+          
       replicas:
         description: "Number of Replicas on Deployment Target"
         required: true
@@ -57,14 +62,6 @@ on:
           - "6"
           - "7"
           - "8"
-      skipMunit:
-        description: "Skip MUnit tests (only applicable to DEV)"
-        required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
 
 run-name: "Env: ${{ inputs.environment }} | ${{ inputs.repository }} | Build & Deploy"
 
@@ -119,6 +116,7 @@ jobs:
                 "snapshots": { "enabled": "true" }
               }
             ]
+            
       - name: Set Lowercase Mule Environment
         run: |
           MULE_ENV=$(echo '${{ inputs.environment }}' | tr '[:upper:]' '[:lower:]')
@@ -128,19 +126,11 @@ jobs:
         run: |
           MULE_TARGET=$(echo '${{vars.TARGET }}' | tr '[:upper:]' '[:lower:]')
           echo "MULE_TARGET=$MULE_TARGET" >> $GITHUB_ENV
-          
-      - name: Run MUnit Tests
-        if: >
-          inputs.environment != 'SANDBOX' &&
-          (inputs.environment != 'DESIGN' || inputs.skipMunit != 'true')
-        run: |
-          echo "Running MUnit Tests..."
-          mvn clean test -D"mule.env"="${{ env.ENVIRONMENT }}" -D"app.vCores"="${{ inputs.vCore }}" -D"app.replicas"="${{ inputs.replicas }}"
-           
+                     
       - name: Deploy to Exchange
         run: |
-          mvn clean deploy -DskipTests 
+          mvn clean deploy
      
       - name: Deploy to ${{ inputs.environment }} 
         run: |
-          mvn clean deploy -DskipTests -DmuleDeploy -D"appName"="${{ inputs.repository}}-${{env.MULE_ENV}}-${{env.MULE_TARGET}}" -D"environment"="${{ env.ENVIRONMENT }}" -D"app.vCores"="${{ inputs.vCore }}" -D"app.replicas"="${{ inputs.replicas }}" -D"target"="${{ env.TARGET }}" -D"connectedAppClientId"="${{ env.CONNECTED_APP_CLIENT_ID }}" -D"connectedAppClientSecret"="${{ env.CONNECTED_APP_CLIENT_SECRET }}" -D"connectedAppGrantType"="${{ env.GRANT_TYPE }}" -D"anypoint.platform.client_id"="${{ env.ANYPOINT_CLIENT_ID }}" -D"anypoint.platform.client_secret"="${{ env.ANYPOINT_CLIENT_SECRET }}"
+          mvn clean deploy -DmuleDeploy -D"appName"="${{ inputs.repository}}-${{env.MULE_ENV}}-${{env.MULE_TARGET}}" -D"environment"="${{ env.ENVIRONMENT }}" -D"app.vCores"="${{ inputs.vCore }}" -D"app.replicas"="${{ inputs.replicas }}" -D"target"="${{ env.TARGET }}" -D"connectedAppClientId"="${{ env.CONNECTED_APP_CLIENT_ID }}" -D"connectedAppClientSecret"="${{ env.CONNECTED_APP_CLIENT_SECRET }}" -D"connectedAppGrantType"="${{ env.GRANT_TYPE }}" -D"anypoint.platform.client_id"="${{ env.ANYPOINT_CLIENT_ID }}" -D"anypoint.platform.client_secret"="${{ env.ANYPOINT_CLIENT_SECRET }}"
